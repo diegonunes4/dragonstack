@@ -1,4 +1,5 @@
 const pool = require('../../databasePool');
+const DragonTraitTable = require('../dragonTrait/table');
 const { response } = require('express');
 
 class DragonTable {
@@ -13,6 +14,14 @@ class DragonTable {
                     if (error) return reject(error);
 
                     const dragonId = response.rows[0].id;
+
+                    Promise.all(dragon.traits.map(({ traitType, traitValue }) => {
+                        return DragonTraitTable.storeDragonTrait({
+                            dragonId, traitType, traitValue
+                        });
+                    }))
+                        .then(() => resolve({ dragonId }))
+                        .catch(error => reject(error));
 
                     resolve({ dragonId })
                 }
