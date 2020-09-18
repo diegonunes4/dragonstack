@@ -21,7 +21,7 @@ class DragonTraitTable {
                     )
                 });
         });
-    }
+    };
 }
 
 module.exports = DragonTraitTable;
